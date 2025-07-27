@@ -8,12 +8,8 @@ const en = {
     error: 'Invalid ZIP code or weather unavailable.',
     duplicateError: 'This location is already added.',
   },
-  locationList: {
-    empty: 'No locations added yet.',
-  },
   locationCard: {
     remove: 'Remove',
-    weeklyForecast: 'Weekly Forecast',
   },
   weeklyForcast: {
     weeklyForecastTitle: 'Weekly Forecast',

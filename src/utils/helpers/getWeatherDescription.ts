@@ -16,5 +16,5 @@ export const getWeatherDescription = (code: number | undefined): string => {
     95: 'Thunderstorm',
     96: 'Thunderstorm with slight hail',
   };
-  return code !== undefined ? map[code] || `Code ${code}` : '';
+  return code !== undefined && code !== null ? map[code] || `Code ${code}` : '';
 };

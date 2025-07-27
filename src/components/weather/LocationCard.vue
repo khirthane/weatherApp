@@ -72,7 +72,7 @@
             }"
             class="link mt-auto text-right"
           >
-            {{ t('locationCard.weeklyForecast') }}
+            {{ t('weeklyForcast.weeklyForecastTitle') }}
           </RouterLink>
         </span>
       </div>

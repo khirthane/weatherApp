@@ -5,7 +5,7 @@ export const SAVED_LOCATIONS = 'saved_locations';
 
 const locations = ref<IWeatherInfo[]>([]);
 
-// Load from localStorage on startup
+// Load from localStorage
 const saved = localStorage.getItem(SAVED_LOCATIONS);
 if (saved) {
   try {
@@ -27,18 +27,17 @@ watch(
 export function useLocalLocations() {
   function add(location: IWeatherInfo) {
     const exists = locations.value.some((loc) => loc.zip === location.zip);
-    if (!exists) locations.value.push(location);
+    if (!exists) {
+      locations.value.push(location);
+    }
   }
 
   function remove(location: { lat: number; lon: number }) {
-    locations.value.forEach((loc, index) => {
-      if (
-        loc.location.latitude === location.lat &&
-        loc.location.longitude === location.lon
-      ) {
-        locations.value.splice(index, 1);
-      }
-    });
+    locations.value = locations.value.filter(
+      (loc) =>
+        loc.location.latitude !== location.lat ||
+        loc.location.longitude !== location.lon
+    );
   }
 
   return {
