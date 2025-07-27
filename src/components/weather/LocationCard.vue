@@ -9,7 +9,7 @@
         })
       "
     >
-      <img src="../../assets/images/icons/remove.svg" width="30" />
+      <img :src="Icons.removeIcon" width="30" />
     </button>
     <div class="flex justify-between items-stretch h-full">
       <!-- Left column -->
@@ -20,21 +20,21 @@
           </h2>
           <div class="flex gap-4 mt-1">
             <p class="text-sm text-gray-500 flex">
-              <img src="../../assets/images/icons/wind.svg" width="15" />
+              <img :src="Icons.windIcon" width="15" />
               <span class="ml-1"
                 >{{ weather?.current_weather?.windspeed }} {{ Units.KM }}</span
               >
             </p>
 
             <p class="text-sm text-gray-500 flex">
-              <img src="../../assets/images/icons/max-temp.svg" width="15" />
+              <img :src="Icons.maxTempIcon" width="15" />
               <span
                 >{{ Math.round(weather?.daily?.temperature_2m_max[0])
                 }}{{ Units.CELCIUS }}</span
               >
             </p>
             <p class="text-sm text-gray-500 flex">
-              <img src="../../assets/images/icons/min-temp.svg" width="15" />
+              <img :src="Icons.minTempIcon" width="15" />
               <span
                 >{{ Math.round(weather?.daily.temperature_2m_min[0])
                 }}{{ Units.CELCIUS }}</span
@@ -62,7 +62,7 @@
           {{ getWeatherIcon(weather?.current_weather?.weathercode) }}
         </span>
         <span class="text-sm">
-          <router-link
+          <RouterLink
             :to="{
               path: `/forecast/${location.name}`,
               query: {
@@ -70,10 +70,10 @@
                 lon: location.longitude,
               },
             }"
-            class="text-sm text-purple-600 mt-auto text-right"
+            class="link mt-auto text-right"
           >
             {{ t('locationCard.weeklyForecast') }}
-          </router-link>
+          </RouterLink>
         </span>
       </div>
     </div>
@@ -81,6 +81,7 @@
 </template>
 
 <script setup lang="ts">
+import { Icons } from '@/assets/images/icons';
 import { Units } from '@/constants/units';
 import { IWeatherInfo } from '@/types';
 import { getWeatherDescription, getWeatherIcon } from '@/utils/helpers';

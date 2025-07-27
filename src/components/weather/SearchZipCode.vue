@@ -2,7 +2,7 @@
   <form @submit.prevent="handleSubmit" class="w-full">
     <div class="zip-search">
       <div class="grid place-items-center h-full w-12 text-grey pl-2">
-        <img src="../../assets/images/icons/search.svg" width="20" />
+        <img :src="Icons.searchIcon" width="20" />
       </div>
       <input
         v-model="zip"
@@ -13,7 +13,7 @@
         maxlength="10"
         required
       />
-      <button type="submit" class="search-button">
+      <button type="submit" class="search-button" :disabled="loading">
         {{ t('zipSearch.addLocation') }}
       </button>
     </div>
@@ -22,15 +22,17 @@
 </template>
 
 <script setup lang="ts">
+import { Icons } from '@/assets/images/icons';
 import { SAVED_LOCATIONS } from '@/composables/useLocalLocations';
 import { getWeatherByZip } from '@/services';
 import { IWeatherInfo } from '@/types/';
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-
 const { t } = useI18n();
 const zip = ref('');
 const error = ref('');
+const loading = ref(false);
+
 const emit = defineEmits<{
   (e: 'add', weather: IWeatherInfo): void;
 }>();
@@ -41,22 +43,28 @@ watch(zip, () => {
 
 async function handleSubmit() {
   error.value = '';
-  const savedLocations = JSON.parse(localStorage.getItem(SAVED_LOCATIONS));
-  if (
-    savedLocations &&
-    savedLocations.some((loc: IWeatherInfo) => loc.zip === zip.value)
-  ) {
+  const savedLocations = JSON.parse(
+    localStorage.getItem(SAVED_LOCATIONS) || '[]'
+  );
+
+  if (savedLocations?.some((loc: IWeatherInfo) => loc.zip === zip.value)) {
     error.value = t('zipSearch.duplicateError');
     return;
   }
 
-  const result = await getWeatherByZip(zip.value);
-
-  if (result) {
-    emit('add', { ...result, zip: zip.value });
-    zip.value = '';
-  } else {
+  loading.value = true;
+  try {
+    const result = await getWeatherByZip(zip.value);
+    if (result) {
+      emit('add', { ...result, zip: zip.value });
+      zip.value = '';
+    } else {
+      error.value = t('zipSearch.error');
+    }
+  } catch {
     error.value = t('zipSearch.error');
+  } finally {
+    loading.value = false;
   }
 }
 </script>

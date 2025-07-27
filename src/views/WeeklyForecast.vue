@@ -4,16 +4,13 @@
       <h1 class="text-xl font-semibold">
         {{ city }} - {{ t('weeklyForcast.weeklyForecastTitle') }}
       </h1>
-      <RouterLink
-        to="/"
-        class="text-purple-600 hover:underline text-sm font-medium"
-      >
+      <RouterLink to="/" class="link">
         ← {{ t('weeklyForcast.backToMainPage') }}
       </RouterLink>
     </div>
     <div class="forcast-card">
       <div v-if="loading" class="flex items-center justify-center min-h-32">
-        <img src="../assets/images/icons/spinner.svg" width="60" />
+        <img :src="Icons.spinnerIcon" width="15" />
       </div>
       <div
         v-else-if="error"
@@ -35,7 +32,7 @@
           <div class="flex text-sm gap-2 justify-center w-full">
             <div class="flex text-gray-800">
               <img
-                src="../assets/images/icons/max-temp.svg"
+                :src="Icons.maxTempIcon"
                 width="15"
                 class="hidden md:block"
               />
@@ -44,7 +41,7 @@
             </div>
             <div class="flex text-gray-400">
               <img
-                src="../assets/images/icons/min-temp.svg"
+                :src="Icons.minTempIcon"
                 width="15"
                 class="hidden md:block"
               />
@@ -59,6 +56,7 @@
 </template>
 
 <script setup lang="ts">
+import { Icons } from '@/assets/images/icons';
 import { Units } from '@/constants/units';
 import { getWeeklyForecast } from '@/services';
 import { I5DayForecastResponse } from '@/types';
@@ -66,7 +64,6 @@ import { getFormatDate, getWeatherIcon } from '@/utils/helpers';
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-
 const { t } = useI18n();
 const route = useRoute();
 const city = route.params.city as string;
