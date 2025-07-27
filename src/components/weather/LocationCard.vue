@@ -95,5 +95,4 @@ const props = defineProps<{
 
 const location = props.data?.location;
 const weather = props.data?.weather;
-const zip = props.data?.zip;
 </script>
